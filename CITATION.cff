@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: >-
+  If this software contributes to your scholarly work, please cite both
+  the associated HealthGuard manuscript (full provisional details in README.md)
+  and the specific archived version of this software (DOI when available).
+  This academic request does not add a condition to the MIT license.
+type: software
+title: "HealthGuard: Phase 4 Deterministic Surrogate Simulation and Reproducibility Package"
+authors:
+  - family-names: "Hassan"
+    given-names: "Ahmed Nazar"
+  - family-names: "Hamed"
+    given-names: "Tarfa"
+  - family-names: "Aldabbagh"
+    given-names: "Omar Abdulmunem Ibrahim"
+  - family-names: "Sulaiman"
+    given-names: "Abdullah S."
+  - family-names: "Cao"
+    given-names: "Yue"
+  - family-names: "Kaiwartya"
+    given-names: "Omprakash"
+license: MIT
+keywords:
+  - healthguard
+  - healthcare
+  - deterministic simulation
+  - reproducibility
+  - edge computing
+  - blockchain

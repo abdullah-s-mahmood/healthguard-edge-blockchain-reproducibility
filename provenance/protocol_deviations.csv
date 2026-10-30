@@ -1,0 +1,2 @@
+deviation_id,phase,timestamp,description,rationale,affected_runs,impact_assessment,approved_by
+DEV-P4-20260804_025733,phase4,2026-08-03T23:57:33.893247+00:00,No runnable iFogSim2 model in repository; used deterministic surrogate simulation runner,Preserve preregistered factor structure and generate traceable Phase 4 artifacts under host constraints,20260804_025733,All Phase 4 outputs in this run are SIMULATED and cannot be interpreted as production deployment benchmarks,self-approved-protocol-step

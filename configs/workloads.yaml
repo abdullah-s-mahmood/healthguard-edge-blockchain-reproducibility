@@ -1,0 +1,112 @@
+metadata:
+  status: preregistered
+  evidence_class: RECONSTRUCTION_ASSUMPTION
+
+primary_workload:
+  device_counts: [100, 500, 1000, 5000, 10000]
+  event_rate_per_device_per_s: 4
+  offered_rate_formula: offered_events_per_s = device_count * event_rate_per_device_per_s
+  offered_rates:
+    "100": 400
+    "500": 2000
+    "1000": 4000
+    "5000": 20000
+    "10000": 40000
+  classification_note: workload_definition_not_result
+
+event_mix_primary:
+  routine_vitals_ratio: 0.989
+  critical_vitals_ratio: 0.010
+  medical_image_ratio: 0.001
+
+event_mix_sensitivity:
+  critical_ratio: [0.001, 0.01, 0.05, 0.10]
+  image_ratio: [0.0, 0.0001, 0.001, 0.005]
+
+vital_features:
+  - heart_rate
+  - spo2
+  - systolic_blood_pressure
+  - diastolic_blood_pressure
+  - respiratory_rate
+  - body_temperature
+  - ecg_rr_interval
+
+critical_rules:
+  spo2_lt: 90
+  heart_rate_gt: 150
+  evidence_class: RECONSTRUCTION_ASSUMPTION
+  caveat: simulation_triage_rules_not_clinical_validation
+
+payload_sizes:
+  routine_vital_record: 1KiB
+  critical_vital_record: 1.5KiB
+  routine_log_record: 512B
+  feature_vector_payload:
+    vector: 128_float32
+    vector_bytes: 512B
+    envelope_target_total: 1KiB
+  raw_image_payload:
+    primary: 5MiB
+    sensitivity: [1MiB, 5MiB, 10MiB]
+  blockchain_metadata_tx:
+    sizing_policy: measure_encoded_bytes_during_execution
+
+compressibility_policy:
+  no_compression_experiments:
+    image_payload_generation: pseudorandom_incompressible_bytes
+
+edge_filtering:
+  routine_forward_reduction_ratio:
+    primary_manuscript_derived_scenario: 0.80
+    sensitivity: [0.00, 0.20, 0.50, 0.80, 0.90]
+  interpretation_rule: configured_ratio_not_measured_improvement
+
+jmeter_generation_policy:
+  logical_device_modeling: use_device_id_dimension_not_thread_per_device
+  worker_pool_policy: bounded_workers_with_device_id_mapping
+  schedule:
+    warmup_seconds: 30
+    measurement_seconds: 120
+    cooldown_seconds: 30
+  repetitions:
+    measured_runs: 10
+    warmup_runs_excluded: 5
+    escalation_condition: increase_to_20_if_ci_unstable
+
+network_segments:
+  A_device_to_edge: true
+  B_hospital_lan: true
+  C_hospital_to_cloud_wan: true
+  D_local_ipfs_storage_network: true
+  E_blockchain_consortium_network: true
+
+network_primary_params:
+  device_to_edge_one_way_delay_ms:
+    distribution: truncated_normal
+    median_target: 2
+    jitter_scale: 0.5
+  hospital_lan_one_way_delay_ms:
+    distribution: truncated_normal
+    median_target: 1
+    jitter_scale: 0.25
+  wan_one_way_delay_ms:
+    scenarios: [20, 50, 100]
+    jitter_ratios: [0.05, 0.20, 0.50]
+  lan_bandwidth: 10Gbit/s
+  wan_bandwidth_scenarios: [100Mbit/s, 1Gbit/s]
+  packet_loss_probability_scenarios: [0.0, 0.001, 0.005, 0.01]
+
+reporting_requirements:
+  mandatory_bandwidth_metrics:
+    - core_wan_bytes_during_measurement_interval
+    - device_access_bytes
+    - lan_bytes
+    - ipfs_bytes
+    - blockchain_bytes
+    - total_system_bytes
+  reliability_metrics:
+    - delivery_success_ratio
+    - loss_ratio
+    - duplicate_ratio
+    - error_ratio

@@ -1,0 +1,8 @@
+{
+  "run_id": "20260804_025733",
+  "primary_csv": "results/raw/phase4_primary_runs_20260804_025733.csv",
+  "blockchain_csv": "results/raw/phase4_blockchain_runs_20260804_025733.csv",
+  "sensitivity_csv": "results/raw/phase4_sensitivity_runs_20260804_025733.csv",
+  "summary_json": "results/statistics/phase4_summary_20260804_025733.json",
+  "source_class": "SIMULATED"
+}

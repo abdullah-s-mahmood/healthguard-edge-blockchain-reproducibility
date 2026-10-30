@@ -1,0 +1,3 @@
+# Preserve archived CSV files byte-for-byte; do not normalize CRLF to LF.
+# Treat CR in CRLF as an end-of-line character during whitespace checks.
+*.csv -text whitespace=cr-at-eol

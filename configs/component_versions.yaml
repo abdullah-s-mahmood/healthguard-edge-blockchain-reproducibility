@@ -1,0 +1,78 @@
+metadata:
+  status: preregistered
+  policy: pin_exact_versions_and_record_image_digests_before_phase4
+  evidence_class: RECONSTRUCTION_ASSUMPTION
+
+components:
+  ifogsim2:
+    project: cloudslab/ifogsim
+    version_policy: pin_commit_hash_in_phase2
+    runtime: java
+    evidence_class: RECONSTRUCTION_ASSUMPTION
+
+  kafka:
+    distribution: apache_kafka
+    version: 3.9.0
+    mode: kraft
+    brokers: 3
+    evidence_class: RECONSTRUCTION_ASSUMPTION
+
+  jmeter:
+    version: 5.6.3
+    evidence_class: RECONSTRUCTION_ASSUMPTION
+
+  besu:
+    version: 24.7.1
+    consensus_family: poa_qbft_or_ibft2
+    validators_primary: 4
+    rpc_nodes_primary: 1
+    evidence_class: RECONSTRUCTION_ASSUMPTION
+
+  hyperledger_caliper:
+    version: 0.6.0
+    runtime: nodejs
+    evidence_class: RECONSTRUCTION_ASSUMPTION
+
+  ipfs_kubo:
+    version: 0.31.0
+    nodes_primary: 3
+    private_swarm: true
+    evidence_class: RECONSTRUCTION_ASSUMPTION
+
+  ipfs_cluster:
+    version: 1.1.1
+    peers_primary: 3
+    replication_factor: 3
+    evidence_class: RECONSTRUCTION_ASSUMPTION
+
+  python_analysis:
+    version: 3.12.3
+    packages:
+      numpy: 2.1.1
+      pandas: 2.2.3
+      scipy: 1.14.1
+      statsmodels: 0.14.4
+      matplotlib: 3.9.2
+      seaborn: 0.13.2
+      pyyaml: 6.0.2
+      pytest: 8.3.3
+    evidence_class: MEASURED
+
+  java_runtime:
+    version: 21.0.11
+    evidence_class: MEASURED
+
+  node_runtime:
+    version: 24.15.0
+    npm: 11.12.1
+    evidence_class: MEASURED
+
+  docker_engine:
+    version: 28.5.1
+    compose: 2.40.2
+    evidence_class: MEASURED
+
+notes:
+  - This file pins planned versions for protocol stability.
+  - Phase 2 will record concrete container image tags and sha256 digests in software_bill_of_materials.csv.
+  - If compatibility forces version changes, the change and rationale must be logged in protocol_deviations.csv.

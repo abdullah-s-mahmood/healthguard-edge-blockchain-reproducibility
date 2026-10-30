@@ -1,0 +1,7 @@
+sensitivity_id,target_metric,n,mean_value,min_value,max_value,source_class
+SENS-BLOCKCHAIN,p95_commit_latency_s,6,0.552667,0.308,0.9,SIMULATED
+SENS-BLOCKCHAIN,success_tps,6,292.266667,226.0,346.8,SIMULATED
+SENS-FILTER-IMAGE,wan_bandwidth_saving_percent,20,46.17,-6.0,90.0,SIMULATED
+SENS-KAFKA,consumer_lag,32,833.75,60.0,1495.0,SIMULATED
+SENS-KAFKA,throughput_events_per_s,32,18425.0,12560.0,25280.0,SIMULATED
+SENS-RATE-WAN,p95_critical_latency_ms,144,74.753598,25.073262,139.102328,SIMULATED

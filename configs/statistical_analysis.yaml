@@ -1,0 +1,71 @@
+metadata:
+  status: preregistered
+  evidence_class: RECONSTRUCTION_ASSUMPTION
+
+descriptive_statistics:
+  required_fields:
+    - n
+    - mean
+    - sd
+    - median
+    - iqr
+    - p95
+    - p99
+    - min
+    - max
+
+confidence_intervals:
+  method: bootstrap_percentile
+  confidence_level: 0.95
+  resamples: 10000
+  random_seed_source: configs/random_seeds.txt
+
+paired_comparisons:
+  pairing_keys:
+    - scenario_id
+    - device_count
+    - event_rate_per_device
+    - seed_id
+  normality_check: shapiro_wilk_on_paired_differences
+  parametric_test_when_valid: paired_t_test
+  nonparametric_fallback: wilcoxon_signed_rank
+  effect_sizes:
+    - cohens_d_paired
+    - rank_biserial_for_wilcoxon
+  correction_for_multiple_tests: holm
+
+factor_analysis:
+  factors:
+    - architecture
+    - device_count
+    - event_rate_per_device
+    - wan_delay
+    - payload_size
+    - routine_forward_reduction_ratio
+  preferred_models:
+    - robust_regression
+    - mixed_effects_model
+
+saturation_analysis:
+  preregistered_method: segmented_regression_on_throughput_vs_offered_load
+  knee_reporting:
+    - knee_point_estimate
+    - confidence_interval
+    - model_fit_diagnostics
+
+claim_threshold_policy:
+  improvement_claim_allowed_when:
+    - metric_definition_is_explicit
+    - paired_comparison_is_valid
+    - confidence_interval_reported
+    - effect_direction_consistent
+    - adjusted_significance_reported_for_inferential_language
+    - practical_effect_size_nontrivial
+  otherwise_use: descriptive_language_only
+
+figure_and_table_integrity_checks:
+  required:
+    - figure_values_match_source_csv
+    - table_values_match_source_csv
+    - improvement_percentages_recomputed_and_verified
+    - no_mixing_of_measured_and_design_targets_without_labels

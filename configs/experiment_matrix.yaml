@@ -1,0 +1,185 @@
+metadata:
+  protocol_phase: 1
+  status: preregistered
+  evidence_class: RECONSTRUCTION_ASSUMPTION
+  change_control: all post-freeze modifications must be logged to protocol_deviations.csv
+
+design_targets:
+  critical_latency_ms_lt: 20
+  throughput_events_per_s_at_10000_devices: 40000
+  wan_bandwidth_saving_percent_target: 60
+  blockchain_tx_latency_s_lt: 1
+  evidence_class: DESIGN_TARGET
+
+workload_levels:
+  device_counts: [100, 500, 1000, 5000, 10000]
+  event_rates_per_device: [4]
+  paired_seeds_file: configs/random_seeds.txt
+  evidence_class: RECONSTRUCTION_ASSUMPTION
+
+architectures:
+  - name: healthguard
+    source_class: SIMULATED
+  - name: cloud_only
+    source_class: SIMULATED
+
+primary_experiments:
+  - id: EXP-LAT-LOAD
+    title: end_to_end_critical_latency_vs_load
+    factors:
+      architecture: [healthguard, cloud_only]
+      device_count: [100, 500, 1000, 5000, 10000]
+      event_rate_per_device: [4]
+      wan_delay_scenario_ms: [50]
+    repetitions:
+      warmup_runs_excluded: 5
+      measured_runs: 10
+      escalate_to_runs_if_unstable_ci: 20
+      ifogsim_repetitions_per_condition: 30
+    outputs:
+      - median_latency_ms
+      - iqr_latency_ms
+      - p95_latency_ms
+      - p99_latency_ms
+      - bootstrap_95_ci_ms
+
+  - id: EXP-THR-REL
+    title: throughput_and_reliability_vs_load
+    factors:
+      architecture: [healthguard, cloud_only]
+      device_count: [100, 500, 1000, 5000, 10000]
+      event_rate_per_device: [4]
+    outputs:
+      - offered_rate_events_per_s
+      - accepted_rate_events_per_s
+      - processed_rate_events_per_s
+      - acknowledged_rate_events_per_s
+      - delivery_success_ratio
+      - duplicate_ratio
+      - error_ratio
+      - consumer_lag
+      - bootstrap_95_ci
+
+  - id: EXP-WAN-BW
+    title: wan_bandwidth_comparison
+    factors:
+      architecture: [healthguard, cloud_only]
+      device_count: [100, 500, 1000, 5000, 10000]
+      event_rate_per_device: [4]
+    outputs:
+      - wan_bytes_interval
+      - wan_rate_mb_per_s
+      - lan_rate_mb_per_s
+      - ipfs_rate_mb_per_s
+      - blockchain_rate_mb_per_s
+      - bandwidth_saving_percent
+      - bootstrap_95_ci
+
+  - id: EXP-BC-PERF
+    title: blockchain_access_control_latency_and_throughput
+    factors:
+      offered_tx_rate_tps: [10, 25, 50, 100, 250, 500]
+      tx_mix:
+        normal_access: 0.70
+        cid_registration: 0.20
+        consent_update: 0.05
+        break_glass: 0.05
+      validator_count: [4]
+    outputs:
+      - median_commit_latency_s
+      - p95_commit_latency_s
+      - p99_commit_latency_s
+      - success_tps
+      - failed_tps
+      - error_rate
+      - tx_pool_growth
+
+  - id: EXP-BREAK-GLASS
+    title: break_glass_path_evaluation
+    factors:
+      scenario:
+        - valid_emergency
+        - invalid_signature
+        - unauthorized_physician
+        - missing_emergency_context
+        - replayed_request
+        - high_blockchain_load
+        - validator_unavailable
+    outputs:
+      - request_to_submit_ms
+      - submit_to_commit_ms
+      - total_authorization_ms
+      - success_rate
+      - unauthorized_rejection_rate
+      - replay_rejection_rate
+
+sensitivity_experiments:
+  - id: SENS-RATE-WAN
+    factors:
+      event_rate_per_device: [1, 2, 4, 6]
+      wan_delay_ms: [20, 50, 100]
+      wan_jitter_ratio: [0.05, 0.20, 0.50]
+      packet_loss_probability: [0.0, 0.001, 0.005, 0.01]
+    target_output: p95_critical_latency_ms
+
+  - id: SENS-FILTER-IMAGE
+    factors:
+      routine_forward_reduction_ratio: [0.00, 0.20, 0.50, 0.80, 0.90]
+      image_ratio: [0.0, 0.0001, 0.001, 0.005]
+    target_output: wan_bandwidth_saving_percent
+
+  - id: SENS-KAFKA
+    factors:
+      broker_count: [1, 3]
+      partition_count_high_rate_topic: [3, 6, 12, 24]
+      producer_acks: [1, all]
+      compression: [none, lz4]
+    target_outputs:
+      - throughput_events_per_s
+      - end_to_end_latency_ms
+      - duplicate_ratio
+      - consumer_lag
+
+  - id: SENS-BLOCKCHAIN
+    factors:
+      validator_count: [4, 7]
+      break_glass_ratio: [0.01, 0.05, 0.20]
+    target_outputs:
+      - p95_commit_latency_s
+      - success_tps
+      - error_rate
+
+fault_injection_experiments:
+  - id: FI-KAFKA-BROKER-FAILURE
+    scenario: stop_one_broker_during_load
+  - id: FI-KAFKA-DISK-CONSTRAINT
+    scenario: apply_storage_io_pressure
+  - id: FI-IPFS-NODE-FAILURE
+    scenario: one_node_and_two_node_unavailable
+  - id: FI-VALIDATOR-UNAVAILABLE
+    scenario: one_validator_down
+  - id: FI-EDGE-COMPROMISE-BEHAVIOR
+    scenario: drop_delay_reorder_selective_forward
+  - id: FI-REPLAY-ATTACK
+    scenario: replay_signed_readings
+
+execution_windows:
+  warmup_seconds: 30
+  measurement_seconds: 120
+  cooldown_seconds: 30
+  evidence_class: RECONSTRUCTION_ASSUMPTION
+
+exclusion_criteria:
+  - missing_seed
+  - missing_config_hash
+  - missing_run_id
+  - incomplete_warmup_exclusion
+  - negative_latency_values
+  - timestamp_inversion
+  - paired_load_mismatch
+  - component_crash_non_fault_case
+
+outputs_registry:
+  run_manifest: provenance/run_manifest.csv
+  failed_runs: provenance/failed_runs.csv
+  deviations: provenance/protocol_deviations.csv

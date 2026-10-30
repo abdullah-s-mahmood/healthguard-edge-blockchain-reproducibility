@@ -1,0 +1,6 @@
+device_count,n_pairs,test,normality_pvalue,raw_pvalue,holm_adjusted_pvalue,mean_latency_reduction_ms,effect_size,source_class
+100,10,paired_t_as_1sample_on_diff,0.986456,0.0,1e-08,11.173713,6.946904,SIMULATED
+500,10,wilcoxon_signed_rank,0.046032,0.00195312,0.00195312,12.55244,1.0,SIMULATED
+1000,10,paired_t_as_1sample_on_diff,0.687766,0.0,0.0,13.653055,13.265668,SIMULATED
+5000,10,paired_t_as_1sample_on_diff,0.182813,0.0,0.0,19.893495,16.566965,SIMULATED
+10000,10,paired_t_as_1sample_on_diff,0.530498,0.0,0.0,25.655981,16.531348,SIMULATED

@@ -1,0 +1,124 @@
+metadata:
+  status: preregistered
+  evidence_class: RECONSTRUCTION_ASSUMPTION
+
+manuscript_architecture:
+  layer_count: 5
+  layers:
+    - perception_iomt
+    - intelligent_edge
+    - communication_kafka
+    - blockchain_and_offchain_storage
+    - application
+  evidence_class: MANUSCRIPT_REPORTED
+
+logical_topology_primary:
+  remote_cloud_datacenters: 1
+  hospital_aggregation_layers: 1
+  hospital_wards: 10
+  edge_gateways: 10
+  kafka_brokers: 3
+  ipfs_kubo_nodes: 3
+  ipfs_cluster_peers: 3
+  besu_validators: 4
+  besu_rpc_nodes: 1
+  clinician_notification_services: 1
+  monitoring_collectors: 1
+  device_distribution: evenly_across_edge_gateways
+
+baseline_fairness_constraints:
+  matched:
+    - logical_device_population
+    - event_generation_schedule
+    - event_types
+    - payload_sizes
+    - random_seeds
+    - notification_sink
+    - observation_duration
+  differs_only_by:
+    - architecture_routing_and_processing_path
+
+communication_protocols:
+  iomt_to_ingress: https_rest_fhir_like_json
+  ingress_to_edge: http_internal_api
+  edge_to_kafka: kafka_native_protocol
+  kafka_to_consumers: kafka_native_protocol
+  edge_to_ipfs: kubo_http_rpc
+  app_to_blockchain: ethereum_json_rpc
+  notification: http_callback
+
+resource_profiles:
+  full_profile:
+    evidence_class: RECONSTRUCTION_ASSUMPTION
+    services:
+      edge_gateway:
+        cpu: "4"
+        memory: 4GiB
+      cloud_processing:
+        cpu: "16"
+        memory: 32GiB
+      kafka_broker:
+        cpu: "4"
+        memory: 8GiB
+      ipfs_node:
+        cpu: "2"
+        memory: 4GiB
+      besu_validator:
+        cpu: "2"
+        memory: 4GiB
+      besu_rpc:
+        cpu: "2"
+        memory: 4GiB
+      ingress:
+        cpu: "4"
+        memory: 4GiB
+      notification:
+        cpu: "2"
+        memory: 2GiB
+
+  scaled_profile_local:
+    evidence_class: RECONSTRUCTION_ASSUMPTION
+    trigger_condition: host_ram_below_16GiB_or_cpu_below_16_logical
+    ratio_policy: preserve_relative_resource_ratios
+    services:
+      edge_gateway:
+        cpu: "0.50"
+        memory: 512MiB
+      cloud_processing:
+        cpu: "2"
+        memory: 2GiB
+      kafka_broker:
+        cpu: "0.75"
+        memory: 768MiB
+      ipfs_node:
+        cpu: "0.40"
+        memory: 384MiB
+      besu_validator:
+        cpu: "0.40"
+        memory: 384MiB
+      besu_rpc:
+        cpu: "0.40"
+        memory: 384MiB
+      ingress:
+        cpu: "0.50"
+        memory: 512MiB
+      notification:
+        cpu: "0.25"
+        memory: 256MiB
+
+host_measurements:
+  evidence_class: MEASURED
+  captured_at: "2026-08-04T02:30:59+03:00"
+  os: Ubuntu 24.04.3 LTS
+  kernel: Linux 6.17.0-35-generic x86_64 GNU/Linux
+  cpu_model: Intel(R) Core(TM) i7-10510U CPU @ 1.80GHz
+  cpu_logical: 8
+  cpu_physical_cores: 4
+  ram_total: 7.5Gi
+  root_disk_total: 468G
+  root_disk_free: 75G
+  root_fs_type: ext4
+
+notes:
+  - Jetson-specific execution is not claimed unless tested on actual Jetson hardware.
+  - FHIR interoperability claim will be restricted to FHIR-like payloads unless profile validation is implemented and tested.
