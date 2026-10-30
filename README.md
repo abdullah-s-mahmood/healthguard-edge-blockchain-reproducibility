@@ -283,13 +283,13 @@ All selected public code, configurations, archived synthetic raw data, derived r
 
 ## License, copyright, and citation
 
-Copyright (c) 2026 Abdullah S. Sulayman.
+Copyright (c) 2026 Abdullah S. Sulaiman.
 
-The [MIT License](LICENSE) permits commercial use, modification, and redistribution, subject to inclusion of its copyright and permission notices in copies or substantial portions of the software. Its standard warranty disclaimer remains applicable. Abdullah S. Sulayman is the sole identified code copyright holder for this release; copyright ownership does not determine manuscript authorship or contributions.
+The [MIT License](LICENSE) permits commercial use, modification, and redistribution, subject to inclusion of its copyright and permission notices in copies or substantial portions of the software. Its standard warranty disclaimer remains applicable. Abdullah S. Sulaiman is the sole identified code copyright holder for this release; copyright ownership does not determine manuscript authorship or contributions.
 
 **Academic citation request:** when this package contributes to research, please cite both the associated manuscript and the exact archived software version used. This request is not an additional legally binding MIT condition and does not restrict MIT permissions.
 
 1. **Associated manuscript:** Ahmed Nazar Hassan, Tarfa Hamed, Omar Abdulmunem Ibrahim Aldabbagh, Abdullah S. Sulaiman, Yue Cao, and Omprakash Kaiwartya. *Hybrid Edge-Blockchain Framework for Secure Healthcare Big Data Processing*. Manuscript; journal, publication date, and DOI are not established by this package.
 2. **Software:** *HealthGuard: Phase 4 Deterministic Surrogate Simulation and Reproducibility Package*. Cite the authors recorded for the verified release, its exact version, and the corresponding Zenodo archive DOI when issued. Until archival metadata is available, identify the source repository and exact revision used; do not substitute an invented version or DOI.
 
-[CITATION.cff](CITATION.cff) retains the existing six-author sequence. It currently describes software and has no separate manuscript `preferred-citation`. Its software author list requires confirmation independently of code copyright ownership. The manuscript spelling **“Abdullah S. Sulaiman”** is preserved from existing metadata; it differs from the confirmed code copyright spelling **“Abdullah S. Sulayman”** and requires author review. No authorship contributions, affiliations, or publication identifiers are inferred.
+[CITATION.cff](CITATION.cff) retains the existing six-author sequence. It currently describes software and has no separate manuscript `preferred-citation`. Its software author list requires confirmation independently of code copyright ownership. The manuscript spelling **“Abdullah S. Sulaiman”** is preserved from existing metadata; it differs from the confirmed code copyright spelling **“Abdullah S. Sulaiman”** and requires author review. No authorship contributions, affiliations, or publication identifiers are inferred.
